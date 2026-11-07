@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import Container from "../components/Container";
 import ProductGallery from "../components/product/ProductGallery";
 import StockBadge from "../components/product/StockBadge";
+import AddToCart from "../components/product/AddToCart";
 import NotFoundPage from "./NotFoundPage";
 import { getProductById } from "../api/products.api";
 import { discountedPrice, formatPrice } from "../utils/format";
@@ -119,6 +120,7 @@ function ProductPage() {
           </div>
 
           <StockBadge stock={product.stock} />
+          <AddToCart key={product.id} product={product} />
 
           <p className="leading-relaxed text-gray-700">{product.description}</p>
         </div>
