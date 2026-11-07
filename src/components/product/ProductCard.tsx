@@ -5,11 +5,13 @@ import StockBadge from "./StockBadge";
 
 interface ProductCardProps {
   product: Product;
+  onAdd: (product: Product) => void;
 }
 
-function ProductCard({ product }: ProductCardProps) {
+function ProductCard({ product, onAdd }: ProductCardProps) {
   const finalPrice = discountedPrice(product.price, product.discountPercentage);
   const hasDiscount = product.discountPercentage >= 1;
+  const outOfStock = product.stock === 0;
 
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:-translate-y-1 hover:shadow-lg">
@@ -54,6 +56,15 @@ function ProductCard({ product }: ProductCardProps) {
         </div>
 
         <StockBadge stock={product.stock} />
+
+        <button
+          type="button"
+          onClick={() => onAdd(product)}
+          disabled={outOfStock}
+          className="mt-3 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-300"
+        >
+          {outOfStock ? "Out of stock" : "Add to cart"}
+        </button>
       </div>
     </div>
   );

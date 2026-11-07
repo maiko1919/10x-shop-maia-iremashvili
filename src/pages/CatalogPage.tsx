@@ -3,10 +3,12 @@ import Container from "../components/Container";
 import ProductGrid from "../components/product/ProductGrid";
 import { getProducts } from "../api/products.api";
 import type { Product } from "../types/product";
+import { useCart } from "../hooks/useCart";
 
 const LIMIT = 12;
 
 function CatalogPage() {
+  const { addItem } = useCart();
   const [products, setProducts] = useState<Product[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -58,7 +60,9 @@ function CatalogPage() {
         <p className="py-16 text-center text-gray-500">No products found.</p>
       )}
 
-      {!loading && !error && products.length > 0 && <ProductGrid products={products} />}
+      {!loading && !error && products.length > 0 && (
+  <ProductGrid products={products} onAdd={(product) => addItem(product, 1)} />
+)}
     </Container>
   );
 }
