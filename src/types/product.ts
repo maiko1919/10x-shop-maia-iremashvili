@@ -1,3 +1,11 @@
+// ერთი რევიუ
+export interface Review {
+  rating: number;
+  comment: string;
+  date: string;
+  reviewerName: string;
+}
+
 // ერთი პროდუქტი, როგორც DummyJSON აბრუნებს
 export interface Product {
   id: number;
@@ -11,6 +19,7 @@ export interface Product {
   stock: number;
   thumbnail: string;
   images: string[];
+  reviews: Review[];
 }
 
 // პასუხი სიისთვის: /products, /products/search, /products/category/...
