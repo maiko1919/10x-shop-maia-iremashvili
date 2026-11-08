@@ -5,6 +5,7 @@ import ProductGrid from "../components/product/ProductGrid";
 import CatalogToolbar from "../components/catalog/CatalogToolbar";
 import CategoryNav from "../components/catalog/CategoryNav";
 import QuickFilters from "../components/catalog/QuickFilters";
+import SaleMarquee from "../components/catalog/SaleMarquee";
 import Pagination from "../components/catalog/Pagination";
 import { getCategories, getProducts } from "../api/products.api";
 import { useCart } from "../hooks/useCart";
@@ -137,7 +138,8 @@ function CatalogPage() {
         <h1 className="text-2xl font-bold">Catalog</h1>
         {data && <p className="text-sm text-gray-500">{data.total} products</p>}
       </div>
-
+      
+      <SaleMarquee />
       <CategoryNav
         variant="bar"
         categories={categories}
