@@ -1,14 +1,17 @@
+import { lazy } from "react";
 import { Routes, Route } from "react-router";
 import Layout from "../components/layout/Layout";
-import CatalogPage from "../pages/CatalogPage";
-import ProductPage from "../pages/ProductPage";
-import CartPage from "../pages/CartPage";
-import LoginPage from "../pages/LoginPage";
-import CheckoutPage from "../pages/CheckoutPage";
-import NotFoundPage from "../pages/NotFoundPage";
 import ProtectedRoute from "./ProtectedRoute";
-import OrdersPage from "../pages/OrdersPage";
-import OrderDetailsPage from "../pages/OrderDetailsPage";
+
+// ყოველი გვერდი ცალკე ფაილად იტვირთება — მხოლოდ მაშინ, როცა საჭიროა
+const CatalogPage = lazy(() => import("../pages/CatalogPage"));
+const ProductPage = lazy(() => import("../pages/ProductPage"));
+const CartPage = lazy(() => import("../pages/CartPage"));
+const LoginPage = lazy(() => import("../pages/LoginPage"));
+const CheckoutPage = lazy(() => import("../pages/CheckoutPage"));
+const OrdersPage = lazy(() => import("../pages/OrdersPage"));
+const OrderDetailsPage = lazy(() => import("../pages/OrderDetailsPage"));
+const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
 
 function AppRoutes() {
   return (
