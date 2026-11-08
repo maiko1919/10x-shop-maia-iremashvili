@@ -1,11 +1,12 @@
 import { Link, useNavigate } from "react-router";
 import Container from "../components/Container";
 import CartItemRow from "../components/cart/CartItemRow";
+import PromoCodeForm from "../components/cart/PromoCodeForm";
+import SummaryLines from "../components/cart/SummaryLines";
 import { useCart } from "../hooks/useCart";
-import { formatPrice } from "../utils/format";
 
 function CartPage() {
-  const { items, totalQuantity, subtotal, setQuantity, removeItem, clearCart } = useCart();
+  const { items, totalQuantity, setQuantity, removeItem, clearCart } = useCart();
   const navigate = useNavigate();
 
   function handleClear() {
@@ -18,6 +19,9 @@ function CartPage() {
     return (
       <Container>
         <div className="py-16 text-center">
+          <div aria-hidden="true" className="mb-3 text-5xl">
+            🛒
+          </div>
           <h1 className="text-2xl font-bold">Your cart is empty.</h1>
           <p className="mt-2 text-gray-600">Looks like you have not added anything yet.</p>
           <Link
@@ -59,22 +63,10 @@ function CartPage() {
 
         <aside className="h-fit rounded-2xl border border-gray-200 bg-white p-6">
           <h2 className="text-lg font-semibold">Order summary</h2>
+          <p className="mt-1 text-sm text-gray-500">{totalQuantity} item(s)</p>
 
-          <div className="mt-4 space-y-2 text-sm">
-            <div className="flex justify-between">
-              <span className="text-gray-600">Items</span>
-              <span>{totalQuantity}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Subtotal</span>
-              <span>{formatPrice(subtotal)}</span>
-            </div>
-          </div>
-
-          <div className="mt-4 flex justify-between border-t border-gray-200 pt-4 text-lg font-bold">
-            <span>Total</span>
-            <span>{formatPrice(subtotal)}</span>
-          </div>
+          <PromoCodeForm />
+          <SummaryLines />
 
           <button
             type="button"

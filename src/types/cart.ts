@@ -12,4 +12,5 @@ export interface CartItem {
 // მთელი კალათა
 export interface CartState {
   items: CartItem[];
+  promoCode: string | null;
 }
