@@ -166,6 +166,9 @@ function CatalogPage() {
 
       {data && data.products.length === 0 && (
         <div className="py-16 text-center">
+          <div aria-hidden="true" className="mb-3 text-5xl">
+            🙁
+          </div>
           <p className="text-gray-500">No products found.</p>
           <button
             type="button"
