@@ -148,7 +148,7 @@ function CatalogPage() {
       />
 
       <div className="lg:grid lg:grid-cols-[220px_1fr] lg:gap-8">
-        <aside className="lg:sticky lg:top-6 lg:h-fit">
+        <aside className="lg:sticky lg:top-24 lg:h-fit">
           <CategoryNav
             variant="sidebar"
             categories={categories}

@@ -30,7 +30,7 @@ function Header() {
   }
 
   return (
-    <header className="border-b border-gray-200 bg-white">
+    <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/90 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-3">
         <Link
           to="/"
