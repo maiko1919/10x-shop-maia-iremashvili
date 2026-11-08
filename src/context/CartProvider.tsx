@@ -5,6 +5,7 @@ import type { CartContextValue } from "./CartContext";
 import type { CartItem, CartState } from "../types/cart";
 import type { Product } from "../types/product";
 import { discountedPrice } from "../utils/format";
+import { useToast } from "../hooks/useToast";
 import {
   FREE_SHIPPING_FROM,
   PROMO_CODE,
@@ -37,6 +38,7 @@ interface CartProviderProps {
 
 function CartProvider({ children }: CartProviderProps) {
   const [cart, setCart] = useState<CartState>(loadCart);
+  const { showToast } = useToast();
 
   // ყოველი ცვლილებისას კალათას ვინახავთ
   useEffect(() => {
@@ -49,6 +51,12 @@ function CartProvider({ children }: CartProviderProps) {
   }
 
   function addItem(product: Product, quantity: number) {
+    const inCart = cart.items.find((item) => item.productId === product.id)?.quantity ?? 0;
+    if (inCart >= product.stock) {
+      showToast("No more items in stock", "error");
+      return;
+    }
+
     updateItems((items) => {
       const existing = items.find((item) => item.productId === product.id);
 
@@ -71,9 +79,11 @@ function CartProvider({ children }: CartProviderProps) {
 
       return [...items, newItem];
     });
+
+    showToast(`${product.title} added to cart ✓`);
   }
 
-    // რამდენიმე ნივთის ერთად დამატება (Reorder)
+  // რამდენიმე ნივთის ერთად დამატება (Reorder)
   function addItems(newItems: CartItem[]) {
     updateItems((items) => {
       let result = items;
@@ -89,7 +99,10 @@ function CartProvider({ children }: CartProviderProps) {
       }
       return result;
     });
+
+    showToast("Items added to cart ✓");
   }
+
   function removeItem(productId: number) {
     updateItems((items) => items.filter((item) => item.productId !== productId));
   }

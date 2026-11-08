@@ -39,7 +39,10 @@ function Header() {
             <CartIcon />
             <span className="sr-only sm:not-sr-only">Cart</span>
             {totalQuantity > 0 && (
-              <span className="rounded-full bg-amber-400 px-2 py-0.5 text-xs font-bold text-gray-900">
+                            <span
+                key={totalQuantity}
+                className="animate-pop rounded-full bg-amber-400 px-2 py-0.5 text-xs font-bold text-gray-900"
+              >
                 {totalQuantity}
               </span>
             )}

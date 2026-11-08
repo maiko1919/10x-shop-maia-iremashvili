@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import type { Product } from "../../types/product";
 import { discountedPrice, formatPrice } from "../../utils/format";
@@ -9,9 +10,23 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product, onAdd }: ProductCardProps) {
+  const [added, setAdded] = useState(false);
+
   const finalPrice = discountedPrice(product.price, product.discountPercentage);
   const hasDiscount = product.discountPercentage >= 1;
   const outOfStock = product.stock === 0;
+
+  // "Added ✓" 1.5 წამის შემდეგ ისევ "Add to cart" ხდება
+  useEffect(() => {
+    if (!added) return;
+    const timer = window.setTimeout(() => setAdded(false), 1500);
+    return () => window.clearTimeout(timer);
+  }, [added]);
+
+  function handleAdd() {
+    onAdd(product);
+    setAdded(true);
+  }
 
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:-translate-y-1 hover:shadow-lg">
@@ -59,11 +74,13 @@ function ProductCard({ product, onAdd }: ProductCardProps) {
 
         <button
           type="button"
-          onClick={() => onAdd(product)}
+          onClick={handleAdd}
           disabled={outOfStock}
-          className="mt-3 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-300"
+          className={`mt-3 rounded-lg px-4 py-2 text-sm font-medium text-white transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-300 ${
+            added ? "bg-emerald-800" : "bg-emerald-600 hover:bg-emerald-700"
+          }`}
         >
-          {outOfStock ? "Out of stock" : "Add to cart"}
+          {outOfStock ? "Out of stock" : added ? "Added ✓" : "Add to cart"}
         </button>
       </div>
     </div>
