@@ -11,6 +11,7 @@ const LoginPage = lazy(() => import("../pages/LoginPage"));
 const CheckoutPage = lazy(() => import("../pages/CheckoutPage"));
 const OrdersPage = lazy(() => import("../pages/OrdersPage"));
 const OrderDetailsPage = lazy(() => import("../pages/OrderDetailsPage"));
+const ProfilePage = lazy(() => import("../pages/ProfilePage"));
 const PremiumPage = lazy(() => import("../pages/PremiumPage"));
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
 
@@ -44,6 +45,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <OrderDetailsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
             </ProtectedRoute>
           }
         />

@@ -5,6 +5,7 @@ export interface AuthContextValue {
   user: AuthUser;
   login: (username: string) => void;
   logout: () => void;
+  updateUsername: (username: string) => void;
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null);

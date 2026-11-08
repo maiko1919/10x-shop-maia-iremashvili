@@ -44,7 +44,12 @@ function AuthProvider({ children }: AuthProviderProps) {
     setUser(GUEST);
   }
 
-  const value: AuthContextValue = { user, login, logout };
+  // Profile-ზე სახელის შეცვლა Header-შიც მაშინვე ჩანს
+  function updateUsername(username: string) {
+    setUser((prev) => (prev.isLoggedIn ? { ...prev, username } : prev));
+  }
+
+  const value: AuthContextValue = { user, login, logout, updateUsername };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

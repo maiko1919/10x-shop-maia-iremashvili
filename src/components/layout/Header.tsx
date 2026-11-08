@@ -70,16 +70,17 @@ function Header() {
                 <BoxIcon />
                 <span className="sr-only sm:not-sr-only">Orders</span>
               </NavLink>
-              <span className="hidden px-2 text-sm text-gray-600 lg:inline">
-                Hi, {user.username}
-              </span>
+              <NavLink to="/profile" className={navClass}>
+                <UserIcon />
+                <span className="sr-only lg:not-sr-only">{user.username}</span>
+              </NavLink>
               <button
                 type="button"
                 onClick={handleLogout}
+                aria-label="Log out"
                 className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600"
               >
                 <LogoutIcon />
-                <span className="sr-only sm:not-sr-only">Log out</span>
               </button>
             </>
           ) : (

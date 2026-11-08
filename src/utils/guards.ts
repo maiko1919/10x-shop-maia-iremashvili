@@ -1,6 +1,7 @@
 import type { CartItem, CartState } from "../types/cart";
 import type { Order } from "../types/order";
 import type { Review } from "../types/product";
+import type { ProfileValues } from "../types/user";
 
 function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
@@ -58,5 +59,15 @@ export function isReviewsStore(value: unknown): value is Partial<Record<string, 
   return (
     isObject(value) &&
     Object.values(value).every((list) => Array.isArray(list) && list.every(isReview))
+  );
+}
+
+export function isProfile(value: unknown): value is ProfileValues {
+  return (
+    isObject(value) &&
+    typeof value.firstName === "string" &&
+    typeof value.lastName === "string" &&
+    typeof value.email === "string" &&
+    typeof value.phone === "string"
   );
 }
