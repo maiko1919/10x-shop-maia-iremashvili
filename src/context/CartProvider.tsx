@@ -73,6 +73,23 @@ function CartProvider({ children }: CartProviderProps) {
     });
   }
 
+    // რამდენიმე ნივთის ერთად დამატება (Reorder)
+  function addItems(newItems: CartItem[]) {
+    updateItems((items) => {
+      let result = items;
+      for (const newItem of newItems) {
+        const existing = result.find((item) => item.productId === newItem.productId);
+        result = existing
+          ? result.map((item) =>
+              item.productId === newItem.productId
+                ? { ...item, quantity: Math.min(item.quantity + newItem.quantity, item.stock) }
+                : item
+            )
+          : [...result, { ...newItem, quantity: Math.min(newItem.quantity, newItem.stock) }];
+      }
+      return result;
+    });
+  }
   function removeItem(productId: number) {
     updateItems((items) => items.filter((item) => item.productId !== productId));
   }
@@ -125,6 +142,7 @@ function CartProvider({ children }: CartProviderProps) {
     shipping,
     total,
     addItem,
+    addItems,
     removeItem,
     setQuantity,
     clearCart,

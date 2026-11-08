@@ -11,6 +11,7 @@ export interface CartContextValue {
   shipping: number;
   total: number;
   addItem: (product: Product, quantity: number) => void;
+  addItems: (newItems: CartItem[]) => void;
   removeItem: (productId: number) => void;
   setQuantity: (productId: number, quantity: number) => void;
   clearCart: () => void;
