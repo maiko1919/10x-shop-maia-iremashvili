@@ -1,4 +1,5 @@
 import { Link, NavLink, useNavigate } from "react-router";
+import Logo from "./Logo";
 import { useCart } from "../../hooks/useCart";
 import { useAuth } from "../../hooks/useAuth";
 import { BoxIcon, CartIcon, GridIcon, LogoutIcon, UserIcon } from "../ui/Icons";
@@ -22,11 +23,8 @@ function Header() {
   return (
     <header className="border-b border-gray-200 bg-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-3">
-        <Link to="/" className="flex items-center gap-2">
-          <span className="rounded-lg bg-emerald-600 px-2 py-1 text-sm font-bold text-white">
-            10X
-          </span>
-          <span className="text-lg font-bold text-gray-900">Shop</span>
+        <Link to="/" aria-label="10X Shop — home" className="rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">
+          <Logo />
         </Link>
 
         <nav className="flex items-center gap-1">
@@ -39,7 +37,7 @@ function Header() {
             <CartIcon />
             <span className="sr-only sm:not-sr-only">Cart</span>
             {totalQuantity > 0 && (
-                            <span
+              <span
                 key={totalQuantity}
                 className="animate-pop rounded-full bg-amber-400 px-2 py-0.5 text-xs font-bold text-gray-900"
               >

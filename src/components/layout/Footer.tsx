@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import Logo from "./Logo";
 
 const shopLinks = [
   { to: "/", label: "Catalog" },
@@ -13,11 +14,8 @@ function Footer() {
     <footer className="border-t border-gray-200 bg-white">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:grid-cols-2 lg:grid-cols-3">
         <div>
-          <Link to="/" className="flex items-center gap-2">
-            <span className="rounded-lg bg-emerald-600 px-2 py-1 text-sm font-bold text-white">
-              10X
-            </span>
-            <span className="text-lg font-bold text-gray-900">Shop</span>
+          <Link to="/" aria-label="10X Shop — home" className="inline-block">
+            <Logo />
           </Link>
           <p className="mt-3 text-sm leading-relaxed text-gray-600">
             Everyday products in one place — beauty, tech, home, fashion and more.
