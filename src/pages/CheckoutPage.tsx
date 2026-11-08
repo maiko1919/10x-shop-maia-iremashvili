@@ -12,7 +12,7 @@ import type { ShippingInfo } from "../types/order";
 
 type ShippingErrors = Partial<Record<keyof ShippingInfo, string>>;
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMAIL_PATTERN = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
 function validate(values: ShippingInfo): ShippingErrors {
   const errors: ShippingErrors = {};
