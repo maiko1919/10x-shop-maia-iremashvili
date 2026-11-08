@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router";
 import Container from "../components/Container";
 import ProductGrid from "../components/product/ProductGrid";
 import CatalogToolbar from "../components/catalog/CatalogToolbar";
+import CategoryNav from "../components/catalog/CategoryNav";
 import Pagination from "../components/catalog/Pagination";
 import { getCategories, getProducts } from "../api/products.api";
 import { useCart } from "../hooks/useCart";
@@ -136,56 +137,76 @@ function CatalogPage() {
         {data && <p className="text-sm text-gray-500">{data.total} products</p>}
       </div>
 
-      <CatalogToolbar
-        search={searchInput}
-        onSearchChange={setSearchInput}
-        category={category}
+      <CategoryNav
+        variant="bar"
         categories={categories}
-        onCategoryChange={handleCategoryChange}
-        sort={sort}
-        onSortChange={handleSortChange}
-        limit={limit}
-        onLimitChange={handleLimitChange}
+        active={category}
+        onSelect={handleCategoryChange}
       />
 
-      {loading && <p className="py-16 text-center text-gray-500">Loading products...</p>}
+      <div className="lg:grid lg:grid-cols-[220px_1fr] lg:gap-8">
+        <aside className="lg:sticky lg:top-6 lg:h-fit">
+          <CategoryNav
+            variant="sidebar"
+            categories={categories}
+            active={category}
+            onSelect={handleCategoryChange}
+          />
+        </aside>
 
-      {error && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-center text-red-700">
-          <p className="font-semibold">Could not load products.</p>
-          <p className="mt-1 text-sm">{error}</p>
-          <button
-            type="button"
-            onClick={() => setRetry((value) => value + 1)}
-            className="mt-4 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
-          >
-            Retry
-          </button>
+        <div className="min-w-0">
+          <CatalogToolbar
+            search={searchInput}
+            onSearchChange={setSearchInput}
+            category={category}
+            categories={categories}
+            onCategoryChange={handleCategoryChange}
+            sort={sort}
+            onSortChange={handleSortChange}
+            limit={limit}
+            onLimitChange={handleLimitChange}
+          />
+
+          {loading && <p className="py-16 text-center text-gray-500">Loading products...</p>}
+
+          {error && (
+            <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-center text-red-700">
+              <p className="font-semibold">Could not load products.</p>
+              <p className="mt-1 text-sm">{error}</p>
+              <button
+                type="button"
+                onClick={() => setRetry((value) => value + 1)}
+                className="mt-4 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+              >
+                Retry
+              </button>
+            </div>
+          )}
+
+          {data && data.products.length === 0 && (
+            <div className="py-16 text-center">
+              <div aria-hidden="true" className="mb-3 text-5xl">
+                🙁
+              </div>
+              <p className="text-gray-500">No products found.</p>
+              <button
+                type="button"
+                onClick={handleClearFilters}
+                className="mt-3 font-medium text-emerald-700 hover:underline"
+              >
+                Clear filters
+              </button>
+            </div>
+          )}
+
+          {data && data.products.length > 0 && (
+            <>
+              <ProductGrid products={data.products} onAdd={(product) => addItem(product, 1)} />
+              <Pagination page={page} totalPages={totalPages} onChange={handlePageChange} />
+            </>
+          )}
         </div>
-      )}
-
-      {data && data.products.length === 0 && (
-        <div className="py-16 text-center">
-          <div aria-hidden="true" className="mb-3 text-5xl">
-            🙁
-          </div>
-          <p className="text-gray-500">No products found.</p>
-          <button
-            type="button"
-            onClick={handleClearFilters}
-            className="mt-3 font-medium text-emerald-700 hover:underline"
-          >
-            Clear filters
-          </button>
-        </div>
-      )}
-
-      {data && data.products.length > 0 && (
-        <>
-          <ProductGrid products={data.products} onAdd={(product) => addItem(product, 1)} />
-          <Pagination page={page} totalPages={totalPages} onChange={handlePageChange} />
-        </>
-      )}
+      </div>
     </Container>
   );
 }
