@@ -10,6 +10,14 @@ function navClass({ isActive }: { isActive: boolean }) {
     : "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-emerald-50 hover:text-emerald-700";
 }
 
+function premiumClass({ isActive }: { isActive: boolean }) {
+  return `flex items-center gap-2 rounded-lg border border-neutral-900 px-3 py-2 text-sm font-medium tracking-wide transition ${
+    isActive
+      ? "bg-neutral-900 text-white"
+      : "text-neutral-900 hover:bg-neutral-900 hover:text-white"
+  }`;
+}
+
 function Header() {
   const { totalQuantity } = useCart();
   const { user, logout } = useAuth();
@@ -23,7 +31,11 @@ function Header() {
   return (
     <header className="border-b border-gray-200 bg-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-3">
-        <Link to="/" aria-label="10X Shop — home" className="rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">
+        <Link
+          to="/"
+          aria-label="10X Shop — home"
+          className="rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+        >
           <Logo />
         </Link>
 
@@ -31,6 +43,11 @@ function Header() {
           <NavLink to="/" end className={navClass}>
             <GridIcon />
             <span className="sr-only sm:not-sr-only">Catalog</span>
+          </NavLink>
+
+          <NavLink to="/premium" className={premiumClass}>
+            <span aria-hidden="true">✦</span>
+            <span className="sr-only sm:not-sr-only">Premium</span>
           </NavLink>
 
           <NavLink to="/cart" className={navClass}>

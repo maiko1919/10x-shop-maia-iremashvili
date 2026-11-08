@@ -3,6 +3,7 @@ import Logo from "./Logo";
 
 const shopLinks = [
   { to: "/", label: "Catalog" },
+  { to: "/premium", label: "Premium" },
   { to: "/?sort=rating-desc", label: "Top rated" },
   { to: "/?sort=newest", label: "New arrivals" },
   { to: "/?sort=discount-desc", label: "Sale" },

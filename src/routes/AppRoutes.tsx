@@ -11,6 +11,7 @@ const LoginPage = lazy(() => import("../pages/LoginPage"));
 const CheckoutPage = lazy(() => import("../pages/CheckoutPage"));
 const OrdersPage = lazy(() => import("../pages/OrdersPage"));
 const OrderDetailsPage = lazy(() => import("../pages/OrderDetailsPage"));
+const PremiumPage = lazy(() => import("../pages/PremiumPage"));
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
 
 function AppRoutes() {
@@ -19,6 +20,7 @@ function AppRoutes() {
       <Route element={<Layout />}>
         <Route path="/" element={<CatalogPage />} />
         <Route path="/products/:id" element={<ProductPage />} />
+        <Route path="/premium" element={<PremiumPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route
