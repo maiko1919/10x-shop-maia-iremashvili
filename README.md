@@ -23,7 +23,17 @@ Product data comes from the [DummyJSON](https://dummyjson.com) API.
 
 ### FULL
 
-_In progress — will be updated._
+- Search with debounce (400 ms) — one request instead of one per letter
+- Category filter, sorting (price, rating, name, newest, biggest discount) and pagination
+- Products per page: 12 / 24 / 48
+- All filters live in the URL — refresh, back button and sharing a link keep the filters
+- Quick filters: ⭐ Top rated, ✨ New arrivals, 🔥 Sale
+- Category sidebar and top bar with icons
+- AbortController cancels old requests; Retry button when loading fails
+- Product page tabs: Description / Reviews
+- Reviews from the API + write your own review (saved in `localStorage`), average rating updates
+- Similar products from the same category
+- Category link on the product page opens the filtered catalog
 
 ## Tech Stack
 
@@ -43,21 +53,24 @@ src/
 ├── api/            # API requests (products.api.ts)
 ├── components/
 │   ├── cart/       # CartItemRow
+│   ├── catalog/    # CatalogToolbar, CategoryNav, QuickFilters, Pagination
 │   ├── layout/     # Header, Footer, Layout
-│   ├── product/    # ProductCard, ProductGrid, ProductGallery, AddToCart, StockBadge
+│   ├── product/    # ProductCard, ProductGrid, ProductDetails, ProductGallery,
+│   │               # AddToCart, StockBadge, ReviewList, ReviewForm, RelatedProducts
 │   ├── ui/         # QuantityStepper, FormField
 │   ├── Container.tsx
 │   ├── ErrorBoundary.tsx
 │   └── ScrollToTop.tsx
 ├── context/        # AuthContext, AuthProvider, CartContext, CartProvider
-├── hooks/          # useAuth, useCart
+├── hooks/          # useAuth, useCart, useDebounce
 ├── pages/          # Catalog, Product, Cart, Login, Checkout, NotFound
 ├── routes/         # AppRoutes, ProtectedRoute
 ├── types/          # Product, Cart, User, Order types
-└── utils/          # price helpers (discountedPrice, formatPrice)
+└── utils/          # price helpers, catalog options, category icons, reviews storage
 ```
 
-**Data flow:** Pages load products from the API inside `useEffect` and keep them in `useState`.
+**Data flow:** Catalog filters (search, category, sort, page, per page) are read from the URL with `useSearchParams`.
+Pages load products from the API inside `useEffect` and keep them in `useState`.
 The cart and the logged-in user live in React Context (`CartProvider`, `AuthProvider`), so any component can read them with the `useCart()` and `useAuth()` hooks.
 User actions call context functions (for example `addItem`), which create a new state with immutable updates, and React re-renders the UI.
 The cart is also written to `localStorage` (key `shop_cart`) on every change.

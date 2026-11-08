@@ -2,8 +2,6 @@
 
 **Live demo:** https://10x-shop-maia-iremashvili.vercel.app/
 
-> ეს ანგარიში CORE-ის დასრულების შემდეგ დაიწერა. FULL ფუნქციების შემდეგ განახლდება.
-
 ## 1. დაგეგმილი vs შესრულებული
 
 ### CORE
@@ -25,15 +23,26 @@
 
 ### FULL
 
-_მიმდინარეობს — განახლდება._
+| მოთხოვნა | სტატუსი |
+|---|---|
+| ძებნა debounce-ით (useDebounce — generic hook) | ✅ |
+| კატეგორიის ფილტრი, სორტი, პაგინაცია | ✅ |
+| URL state (useSearchParams) | ✅ |
+| AbortController + Retry | ✅ |
+| Reviews (სია + ფორმა + localStorage) | ✅ |
+| Related products | ✅ |
+| Tailwind: arbitrary values, aria-invalid variant | ✅ |
+| დამატებით: 12/24/48 გვერდზე, Top rated / New / Sale, კატეგორიების მენიუ იკონებით | ✅ |
+| Promo კოდი, dark mode, Orders, Profile, Formik/Yup | ❌ დრო არ მეყო |
+| Lazy routes, Lighthouse ანგარიში | ❌ დრო არ მეყო |
 
 ## 2. მეტრიკები
 
 | მეტრიკა | მნიშვნელობა |
 |---|---|
-| Commit-ები | 30 |
-| JS bundle | 281.68 kB (gzip: 87.18 kB) |
-| CSS bundle | 19.57 kB (gzip: 4.71 kB) |
+| Commit-ები | 40+ |
+| JS bundle (CORE ეტაპზე) | 281.68 kB (gzip: 87.18 kB) |
+| CSS bundle (CORE ეტაპზე) | 19.57 kB (gzip: 4.71 kB) |
 | `npm run typecheck` | 0 შეცდომა |
 | `npm run lint` | 0 შეცდომა |
 | ნაპოვნი და გასწორებული ბაგები | 4 (იხ. DEBUG-LOG.md) |
