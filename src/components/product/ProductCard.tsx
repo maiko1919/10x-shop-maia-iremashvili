@@ -3,6 +3,8 @@ import { Link } from "react-router";
 import type { Product } from "../../types/product";
 import { discountedPrice, formatPrice } from "../../utils/format";
 import StockBadge from "./StockBadge";
+import QuickViewModal from "./QuickViewModal";
+import { EyeIcon } from "../ui/Icons";
 
 interface ProductCardProps {
   product: Product;
@@ -11,6 +13,7 @@ interface ProductCardProps {
 
 function ProductCard({ product, onAdd }: ProductCardProps) {
   const [added, setAdded] = useState(false);
+  const [quickViewOpen, setQuickViewOpen] = useState(false);
 
   const finalPrice = discountedPrice(product.price, product.discountPercentage);
   const hasDiscount = product.discountPercentage >= 1;
@@ -29,17 +32,28 @@ function ProductCard({ product, onAdd }: ProductCardProps) {
   }
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:-translate-y-1 hover:shadow-lg">
-      <Link to={`/products/${product.id}`} className="bg-gray-100">
-        <img
-          src={product.thumbnail}
-          alt={product.title}
-          loading="lazy"
-          width={300}
-          height={300}
-          className="aspect-square w-full object-contain p-4"
-        />
-      </Link>
+    <div className="group flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:-translate-y-1 hover:shadow-lg">
+      <div className="relative bg-gray-100">
+        <Link to={`/products/${product.id}`}>
+          <img
+            src={product.thumbnail}
+            alt={product.title}
+            loading="lazy"
+            width={300}
+            height={300}
+            className="aspect-square w-full object-contain p-4"
+          />
+        </Link>
+
+        <button
+          type="button"
+          onClick={() => setQuickViewOpen(true)}
+          className="absolute right-3 top-3 flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-2 text-xs font-medium text-gray-700 shadow-sm transition hover:bg-white hover:text-emerald-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 lg:opacity-0 lg:group-hover:opacity-100 lg:focus-visible:opacity-100"
+        >
+          <EyeIcon width={16} height={16} />
+          Quick view
+        </button>
+      </div>
 
       <div className="flex flex-1 flex-col gap-1 p-4">
         <p className="text-xs uppercase tracking-wide text-gray-500">
@@ -83,6 +97,10 @@ function ProductCard({ product, onAdd }: ProductCardProps) {
           {outOfStock ? "Out of stock" : added ? "Added ✓" : "Add to cart"}
         </button>
       </div>
+
+      {quickViewOpen && (
+        <QuickViewModal product={product} onClose={() => setQuickViewOpen(false)} />
+      )}
     </div>
   );
 }
