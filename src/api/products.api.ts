@@ -1,6 +1,6 @@
+import { api } from "./ApiClient";
+import { isApiError } from "./ApiError";
 import type { Category, Product, ProductsResponse } from "../types/product";
-
-const BASE_URL = "https://dummyjson.com";
 
 export interface ProductQuery {
   search: string;
@@ -24,10 +24,7 @@ const SORT_RULES: Partial<Record<string, SortRule>> = {
   "discount-desc": { sortBy: "discountPercentage", order: "desc" },
 };
 
-export async function getProducts(
-  query: ProductQuery,
-  signal?: AbortSignal
-): Promise<ProductsResponse> {
+export function getProducts(query: ProductQuery, signal?: AbortSignal): Promise<ProductsResponse> {
   const params = new URLSearchParams({
     limit: String(query.limit),
     skip: String((query.page - 1) * query.limit),
@@ -48,36 +45,21 @@ export async function getProducts(
     params.set("order", rule.order);
   }
 
-  const response = await fetch(`${BASE_URL}${path}?${params.toString()}`, { signal });
-
-  if (!response.ok) {
-    throw new Error(`Request failed with status ${response.status}`);
-  }
-
-  return response.json() as Promise<ProductsResponse>;
+  return api.get<ProductsResponse>(`${path}?${params.toString()}`, signal);
 }
 
-export async function getCategories(signal?: AbortSignal): Promise<Category[]> {
-  const response = await fetch(`${BASE_URL}/products/categories`, { signal });
-
-  if (!response.ok) {
-    throw new Error(`Request failed with status ${response.status}`);
-  }
-
-  return response.json() as Promise<Category[]>;
+export function getCategories(signal?: AbortSignal): Promise<Category[]> {
+  return api.get<Category[]>("/products/categories", signal);
 }
 
-// ერთი პროდუქტი id-ით. თუ ასეთი არ არსებობს, აბრუნებს null-ს
+// ერთი პროდუქტი id-ით. 404-ზე აბრუნებს null-ს, სხვა შეცდომას გადასცემს ზემოთ
 export async function getProductById(id: number): Promise<Product | null> {
-  const response = await fetch(`${BASE_URL}/products/${id}`);
-
-  if (response.status === 404) {
-    return null;
+  try {
+    return await api.get<Product>(`/products/${id}`);
+  } catch (error: unknown) {
+    if (isApiError(error) && error.status === 404) {
+      return null;
+    }
+    throw error;
   }
-
-  if (!response.ok) {
-    throw new Error(`Request failed with status ${response.status}`);
-  }
-
-  return response.json() as Promise<Product>;
 }
