@@ -4,45 +4,24 @@ import { CartContext } from "./CartContext";
 import type { CartContextValue } from "./CartContext";
 import type { CartItem, CartState } from "../types/cart";
 import type { Product } from "../types/product";
-import { discountedPrice } from "../utils/format";
+import { Cart } from "../models/Cart";
+import { cartStorage } from "../utils/storage";
 import { useToast } from "../hooks/useToast";
-import {
-  FREE_SHIPPING_FROM,
-  PROMO_CODE,
-  PROMO_PERCENT,
-  SHIPPING_COST,
-  roundMoney,
-} from "../utils/cartRules";
+import { PROMO_CODE } from "../utils/cartRules";
 
-const STORAGE_KEY = "shop_cart";
 const EMPTY_CART: CartState = { items: [], promoCode: null };
-
-// გვერდის გახსნისას კალათას localStorage-დან ვკითხულობთ
-function loadCart(): CartState {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (!saved) return EMPTY_CART;
-    const parsed = JSON.parse(saved) as Partial<CartState>;
-    return {
-      items: Array.isArray(parsed.items) ? parsed.items : [],
-      promoCode: typeof parsed.promoCode === "string" ? parsed.promoCode : null,
-    };
-  } catch {
-    return EMPTY_CART;
-  }
-}
 
 interface CartProviderProps {
   children: ReactNode;
 }
 
 function CartProvider({ children }: CartProviderProps) {
-  const [cart, setCart] = useState<CartState>(loadCart);
+  const [cart, setCart] = useState<CartState>(() => cartStorage.get() ?? EMPTY_CART);
   const { showToast } = useToast();
 
   // ყოველი ცვლილებისას კალათას ვინახავთ
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+    cartStorage.set(cart);
   }, [cart]);
 
   // მხოლოდ items-ის შეცვლა, promoCode უცვლელი რჩება
@@ -133,27 +112,17 @@ function CartProvider({ children }: CartProviderProps) {
     setCart((prev) => ({ ...prev, promoCode: null }));
   }
 
-  const items = cart.items;
-  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = roundMoney(
-    items.reduce(
-      (sum, item) => sum + discountedPrice(item.price, item.discountPercentage) * item.quantity,
-      0
-    )
-  );
-  const discount = cart.promoCode ? roundMoney((subtotal * PROMO_PERCENT) / 100) : 0;
-  const afterDiscount = subtotal - discount;
-  const shipping = items.length === 0 || afterDiscount >= FREE_SHIPPING_FROM ? 0 : SHIPPING_COST;
-  const total = roundMoney(afterDiscount + shipping);
+  // ყველა გამოთვლა Cart კლასშია
+  const model = new Cart(cart.items, cart.promoCode);
 
   const value: CartContextValue = {
-    items,
+    items: cart.items,
     promoCode: cart.promoCode,
-    totalQuantity,
-    subtotal,
-    discount,
-    shipping,
-    total,
+    totalQuantity: model.itemCount,
+    subtotal: model.subtotal(),
+    discount: model.discount(),
+    shipping: model.shipping(),
+    total: model.total(),
     addItem,
     addItems,
     removeItem,

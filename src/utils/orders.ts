@@ -1,18 +1,10 @@
 import type { Order, OrderStatus } from "../types/order";
-
-const STORAGE_KEY = "shop_orders";
+import { ordersStorage } from "./storage";
 
 export const ORDER_STATUSES: OrderStatus[] = ["Processing", "Shipped", "Delivered"];
 
 export function loadOrders(): Order[] {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (!saved) return [];
-    const parsed: unknown = JSON.parse(saved);
-    return Array.isArray(parsed) ? (parsed as Order[]) : [];
-  } catch {
-    return [];
-  }
+  return ordersStorage.get() ?? [];
 }
 
 // ახალი შეკვეთა: id, ნომერი და თარიღი აქ ემატება
@@ -27,8 +19,7 @@ export function createOrder(data: Omit<Order, "id" | "number" | "placedAt">): Or
 }
 
 export function saveOrder(order: Order): void {
-  const orders = [order, ...loadOrders()];
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
+  ordersStorage.set([order, ...loadOrders()]);
 }
 
 // სტატუსი არ ინახება — ყოველ ჯერზე დროიდან ითვლება
