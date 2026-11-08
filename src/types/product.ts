@@ -20,3 +20,10 @@ export interface ProductsResponse {
   skip: number;
   limit: number;
 }
+
+// კატეგორია, როგორც /products/categories აბრუნებს
+export interface Category {
+  slug: string;
+  name: string;
+  url: string;
+}
