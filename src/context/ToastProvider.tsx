@@ -40,7 +40,7 @@ function ToastProvider({ children }: ToastProviderProps) {
           <div
             key={toast.id}
             className={`animate-toast-in rounded-xl px-4 py-3 text-sm font-medium text-white shadow-lg ${
-              toast.variant === "success" ? "bg-gray-900" : "bg-red-600"
+              toast.variant === "success" ? "bg-neutral-800" : "bg-red-600"
             }`}
           >
             {toast.message}

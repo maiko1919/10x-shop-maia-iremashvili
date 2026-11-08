@@ -1,5 +1,6 @@
 import { Link, NavLink, useNavigate } from "react-router";
 import Logo from "./Logo";
+import ThemeToggle from "./ThemeToggle";
 import { useCart } from "../../hooks/useCart";
 import { useAuth } from "../../hooks/useAuth";
 import { BoxIcon, CartIcon, GridIcon, LogoutIcon, UserIcon } from "../ui/Icons";
@@ -11,10 +12,10 @@ function navClass({ isActive }: { isActive: boolean }) {
 }
 
 function premiumClass({ isActive }: { isActive: boolean }) {
-  return `flex items-center gap-2 rounded-lg border border-neutral-900 px-3 py-2 text-sm font-medium tracking-wide transition ${
+  return `flex items-center gap-2 rounded-lg border border-gray-900 px-3 py-2 text-sm font-medium tracking-wide transition ${
     isActive
-      ? "bg-neutral-900 text-white"
-      : "text-neutral-900 hover:bg-neutral-900 hover:text-white"
+      ? "bg-gray-900 text-gray-50"
+      : "text-gray-900 hover:bg-gray-900 hover:text-gray-50"
   }`;
 }
 
@@ -56,7 +57,7 @@ function Header() {
             {totalQuantity > 0 && (
               <span
                 key={totalQuantity}
-                className="animate-pop rounded-full bg-amber-400 px-2 py-0.5 text-xs font-bold text-gray-900"
+                className="animate-pop rounded-full bg-amber-400 px-2 py-0.5 text-xs font-bold text-neutral-900"
               >
                 {totalQuantity}
               </span>
@@ -69,7 +70,7 @@ function Header() {
                 <BoxIcon />
                 <span className="sr-only sm:not-sr-only">Orders</span>
               </NavLink>
-              <span className="hidden px-2 text-sm text-gray-600 md:inline">
+              <span className="hidden px-2 text-sm text-gray-600 lg:inline">
                 Hi, {user.username}
               </span>
               <button
@@ -87,6 +88,8 @@ function Header() {
               <span className="sr-only sm:not-sr-only">Log in</span>
             </NavLink>
           )}
+
+          <ThemeToggle />
         </nav>
       </div>
     </header>
