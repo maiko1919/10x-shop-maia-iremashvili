@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import Container from "../components/Container";
 import ProductGrid from "../components/product/ProductGrid";
+import ProductGridSkeleton from "../components/product/ProductGridSkeleton";
 import CatalogToolbar from "../components/catalog/CatalogToolbar";
 import CategoryNav from "../components/catalog/CategoryNav";
 import QuickFilters from "../components/catalog/QuickFilters";
@@ -178,7 +179,7 @@ function CatalogPage() {
             </p>
           )}
 
-          {loading && <p className="py-16 text-center text-gray-500">Loading products...</p>}
+          {loading && <ProductGridSkeleton count={Math.min(limit, 12)} />}
 
           {error && (
             <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-center text-red-700">
