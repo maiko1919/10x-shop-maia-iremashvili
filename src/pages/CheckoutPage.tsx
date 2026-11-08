@@ -1,20 +1,16 @@
 import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
-import { Link, Navigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import Container from "../components/Container";
 import FormField from "../components/ui/FormField";
+import SummaryLines from "../components/cart/SummaryLines";
 import { useAuth } from "../hooks/useAuth";
 import { useCart } from "../hooks/useCart";
 import { discountedPrice, formatPrice } from "../utils/format";
+import { createOrder, saveOrder } from "../utils/orders";
 import type { ShippingInfo } from "../types/order";
 
 type ShippingErrors = Partial<Record<keyof ShippingInfo, string>>;
-
-interface PlacedOrder {
-  fullName: string;
-  itemsCount: number;
-  total: number;
-}
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -39,7 +35,8 @@ function validate(values: ShippingInfo): ShippingErrors {
 
 function CheckoutPage() {
   const { user } = useAuth();
-  const { items, totalQuantity, subtotal, clearCart } = useCart();
+  const { items, subtotal, discount, shipping, total, clearCart } = useCart();
+  const navigate = useNavigate();
 
   const [values, setValues] = useState<ShippingInfo>({
     fullName: user.username,
@@ -49,7 +46,6 @@ function CheckoutPage() {
   });
   const [errors, setErrors] = useState<ShippingErrors>({});
   const [submitting, setSubmitting] = useState(false);
-  const [placedOrder, setPlacedOrder] = useState<PlacedOrder | null>(null);
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -68,42 +64,28 @@ function CheckoutPage() {
     }
 
     setSubmitting(true);
-    setPlacedOrder({
-      fullName: values.fullName.trim(),
-      itemsCount: totalQuantity,
-      total: subtotal,
+
+    const order = createOrder({
+      items,
+      shipping: {
+        fullName: values.fullName.trim(),
+        email: values.email.trim(),
+        address: values.address.trim(),
+        city: values.city.trim(),
+      },
+      subtotal,
+      discount,
+      shippingCost: shipping,
+      total,
     });
+
+    saveOrder(order);
+    navigate(`/orders/${order.id}`, { state: { justPlaced: true } });
     clearCart();
   }
 
-  // შეკვეთა გაფორმდა — დადასტურება
-  if (placedOrder) {
-    return (
-      <Container>
-        <div className="mx-auto max-w-md rounded-2xl border border-gray-200 bg-white p-8 text-center">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-2xl text-emerald-700">
-            ✓
-          </div>
-          <h1 className="mt-4 text-2xl font-bold">Thank you! Your order has been placed.</h1>
-          <p className="mt-2 text-gray-600">
-            {placedOrder.fullName}, we received your order of {placedOrder.itemsCount} item(s).
-          </p>
-          <p className="mt-4 text-lg">
-            Total: <span className="font-bold text-emerald-700">{formatPrice(placedOrder.total)}</span>
-          </p>
-          <Link
-            to="/"
-            className="mt-6 inline-block rounded-lg bg-emerald-600 px-5 py-2.5 font-medium text-white hover:bg-emerald-700"
-          >
-            Continue shopping
-          </Link>
-        </div>
-      </Container>
-    );
-  }
-
   // ცარიელი კალათით Checkout-ზე არაფერი გვესაქმება
-  if (items.length === 0) {
+  if (items.length === 0 && !submitting) {
     return <Navigate to="/cart" replace />;
   }
 
@@ -149,6 +131,10 @@ function CheckoutPage() {
             error={errors.city}
           />
 
+          <p className="text-sm text-gray-500">
+            This is a demo shop — no real payment will be taken.
+          </p>
+
           <button
             type="submit"
             disabled={submitting}
@@ -174,10 +160,7 @@ function CheckoutPage() {
             ))}
           </ul>
 
-          <div className="mt-4 flex justify-between border-t border-gray-200 pt-4 text-lg font-bold">
-            <span>Total</span>
-            <span>{formatPrice(subtotal)}</span>
-          </div>
+          <SummaryLines />
         </aside>
       </div>
     </Container>
