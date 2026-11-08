@@ -131,15 +131,15 @@ function CatalogPage() {
   const data = !loading ? result.data : null;
   const error = !loading ? result.error : null;
   const totalPages = data ? Math.ceil(data.total / limit) : 0;
+  const from = (page - 1) * limit + 1;
+  const to = data ? Math.min(page * limit, data.total) : 0;
 
   return (
     <Container>
-      <div className="mb-6 flex items-end justify-between">
-        <h1 className="text-2xl font-bold">Catalog</h1>
-        {data && <p className="text-sm text-gray-500">{data.total} products</p>}
-      </div>
-      
+      <h1 className="sr-only">Catalog</h1>
+
       <SaleMarquee />
+
       <CategoryNav
         variant="bar"
         categories={categories}
@@ -159,6 +159,7 @@ function CatalogPage() {
 
         <div className="min-w-0">
           <QuickFilters active={sort} onSelect={handleSortChange} />
+
           <CatalogToolbar
             search={searchInput}
             onSearchChange={setSearchInput}
@@ -170,6 +171,12 @@ function CatalogPage() {
             limit={limit}
             onLimitChange={handleLimitChange}
           />
+
+          {data && data.total > 0 && (
+            <p className="mb-4 text-sm text-gray-500">
+              Showing {from}–{to} of {data.total} products
+            </p>
+          )}
 
           {loading && <p className="py-16 text-center text-gray-500">Loading products...</p>}
 
