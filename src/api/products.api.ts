@@ -20,6 +20,8 @@ const SORT_RULES: Partial<Record<string, SortRule>> = {
   "price-desc": { sortBy: "price", order: "desc" },
   "rating-desc": { sortBy: "rating", order: "desc" },
   "title-asc": { sortBy: "title", order: "asc" },
+  newest: { sortBy: "id", order: "desc" },
+  "discount-desc": { sortBy: "discountPercentage", order: "desc" },
 };
 
 export async function getProducts(

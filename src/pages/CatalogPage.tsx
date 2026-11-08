@@ -4,6 +4,7 @@ import Container from "../components/Container";
 import ProductGrid from "../components/product/ProductGrid";
 import CatalogToolbar from "../components/catalog/CatalogToolbar";
 import CategoryNav from "../components/catalog/CategoryNav";
+import QuickFilters from "../components/catalog/QuickFilters";
 import Pagination from "../components/catalog/Pagination";
 import { getCategories, getProducts } from "../api/products.api";
 import { useCart } from "../hooks/useCart";
@@ -155,6 +156,7 @@ function CatalogPage() {
         </aside>
 
         <div className="min-w-0">
+          <QuickFilters active={sort} onSelect={handleSortChange} />
           <CatalogToolbar
             search={searchInput}
             onSearchChange={setSearchInput}
