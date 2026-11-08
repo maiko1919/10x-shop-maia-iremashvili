@@ -56,3 +56,12 @@ export function LogoutIcon(props: IconProps) {
     </svg>
   );
 }
+export function BoxIcon(props: IconProps) {
+  return (
+    <svg {...baseProps(props)}>
+      <path d="M21 8l-9-5-9 5 9 5 9-5z" />
+      <path d="M3 8v8l9 5 9-5V8" />
+      <path d="M12 13v8" />
+    </svg>
+  );
+}

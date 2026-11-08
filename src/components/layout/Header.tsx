@@ -1,7 +1,7 @@
 import { Link, NavLink, useNavigate } from "react-router";
 import { useCart } from "../../hooks/useCart";
 import { useAuth } from "../../hooks/useAuth";
-import { CartIcon, GridIcon, LogoutIcon, UserIcon } from "../ui/Icons";
+import { BoxIcon, CartIcon, GridIcon, LogoutIcon, UserIcon } from "../ui/Icons";
 
 function navClass({ isActive }: { isActive: boolean }) {
   return isActive
@@ -47,6 +47,10 @@ function Header() {
 
           {user.isLoggedIn ? (
             <>
+              <NavLink to="/orders" className={navClass}>
+                <BoxIcon />
+                <span className="sr-only sm:not-sr-only">Orders</span>
+              </NavLink>
               <span className="hidden px-2 text-sm text-gray-600 md:inline">
                 Hi, {user.username}
               </span>
