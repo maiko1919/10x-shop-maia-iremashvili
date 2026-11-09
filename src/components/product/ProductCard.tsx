@@ -48,7 +48,7 @@ function ProductCard({ product, onAdd }: ProductCardProps) {
         <button
           type="button"
           onClick={() => setQuickViewOpen(true)}
-          className="absolute right-3 top-3 flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-2 text-xs font-medium text-gray-700 shadow-sm transition hover:bg-white hover:text-emerald-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 lg:opacity-0 lg:group-hover:opacity-100 lg:focus-visible:opacity-100"
+          className="absolute right-3 top-3 flex items-center gap-1.5 rounded-full border border-gray-200 bg-white/90 px-3 py-2 text-xs font-medium text-gray-700 shadow-sm transition hover:border-emerald-300 hover:bg-white hover:text-emerald-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
         >
           <EyeIcon width={16} height={16} />
           Quick view
