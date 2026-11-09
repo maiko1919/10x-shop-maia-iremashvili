@@ -38,9 +38,10 @@
 | TypeScript | type guards localStorage-ისთვის, unions, `as const`, utility types (`Omit`, `Partial`, `Record`, `keyof`) | ✅ |
 | Tailwind | `@theme` (საკუთარი ანიმაციები), dark mode (`@custom-variant`), arbitrary values, group/aria variants | ✅ |
 | ოპტიმიზაცია | lazy routes, lazy images, AbortController, Lighthouse სამიზნეები | ✅ |
+| ოპტიმიზაცია | COMPATIBILITY.md (Chrome, Edge, მობილური) | ✅ |
 | დამატებით | Quick View, Premium, Hot deals, კატეგორიების მენიუ ჯგუფებით, sticky header | ✅ |
 | პროცესი | ≥ 40 commit 15 სხვადასხვა დღეს, 3 progress note | ❌ |
-| პროცესი | GitHub Issues/Projects, ≥ 8 Pull Request | ❌ |
+| პროცესი | GitHub Issues/Projects, ≥ 8 Pull Request | 🟡 1 Issue + 1 PR (ბოლო ეტაპზე) |
 
 **რატომ არ გაკეთდა პროცესის ნაწილი:** პროექტზე სამი კვირის ნაცვლად რამდენიმე დღე ვიმუშავე (გადაბარება). ყოველკვირეული ჩანაწერები და 15 სხვადასხვა დღის commit-ები სამკვირიანი პროცესის მტკიცებულებაა — მათი უკან თარიღით შექმნა არ მინდოდა. Git-ის ისტორია ზუსტად ასახავს, როდის და რა გავაკეთე.
 
@@ -53,20 +54,24 @@
 | Commit-ები | 60+ |
 | `npm run typecheck` | 0 შეცდომა |
 | `npm run lint` | 0 შეცდომა |
-| ნაპოვნი და გასწორებული ბაგები | 6 (იხ. DEBUG-LOG.md) |
+| ნაპოვნი და გასწორებული ბაგები | 7 (იხ. DEBUG-LOG.md) |
+| ბრაუზერები | Chrome, Edge, მობილური 375px (იხ. COMPATIBILITY.md) |
+| Pull Request-ები | 1 (Issue #1-ზე მიბმული) |
 | JS bundle (CORE ეტაპზე, ერთი ფაილი) | 281.68 kB (gzip: 87.18 kB) |
 | JS bundle (lazy routes-ის შემდეგ) | გვერდები ცალკე chunk-ებადაა დაყოფილი |
 
-### Lighthouse (ლაივ საიტი, Mobile)
+### Lighthouse (ლაივ საიტი, Mobile, ინკოგნიტო)
 
-| მეტრიკა | შედეგი | PRD-ის სამიზნე |
-|---|---|---|
-| Performance | 96 | ≥ 85 ✅ |
-| Accessibility | 96 | ≥ 90 ✅ |
-| Best Practices | 100 | ≥ 90 ✅ |
-| SEO | 83 → title და meta description დავამატე | — |
+| მეტრიკა | before (CORE, 8 ნოე) | after (FULL, 9 ნოე) | PRD-ის სამიზნე |
+|---|---|---|---|
+| Performance | 96 | **100** | ≥ 85 ✅ |
+| Accessibility | 96 | 96 | ≥ 90 ✅ |
+| Best Practices | 100 | 100 | ≥ 90 ✅ |
+| SEO | 83 | **92** | — |
 
-სქრინი: `docs/lighthouse/report.png`
+სქრინები: `docs/lighthouse/before.png`, `docs/lighthouse/after.png`
+
+**რა შეიცვალა:** Performance 96 → 100 — lazy routes (პირველად მხოლოდ კატალოგის კოდი იტვირთება) და skeleton-ი; SEO 83 → 92 — `<title>` და `<meta name="description">`.
 
 რამ შეუწყო ხელი: `loading="lazy"` და `width`/`height` ყველა ფოტოზე, პაგინაცია (12 პროდუქტი ერთად და არა 194), `alt` ყველა სურათზე, `label` ყველა ველზე, skeleton-ი და Hot deals ზოლის წინასწარ დაჯავშნილი სიმაღლე (CLS-ის წინააღმდეგ), ზედმეტი ბიბლიოთეკების გარეშე.
 
